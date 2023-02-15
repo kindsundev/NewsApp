@@ -48,17 +48,17 @@ class BreakingNewsFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.breakingNews.observe(viewLifecycleOwner, Observer { respone ->
-            when(respone) {
+        viewModel.breakingNews.observe(viewLifecycleOwner, Observer { response ->
+            when(response) {
                 is Resource.Success -> {
                     hideProgressBar()
-                    respone.data?.let { newsResponse ->
+                    response.data?.let { newsResponse ->
                         newsAdapter.differ.submitList(newsResponse.articles)
                     }
                 }
                 is Resource.Error -> {
                     hideProgressBar()
-                    respone.message?.let { message ->
+                    response.message?.let { message ->
                         Log.e(TAG, "An error occurred: $message")
                     }
                 }
