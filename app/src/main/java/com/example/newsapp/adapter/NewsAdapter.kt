@@ -19,7 +19,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
     val differ = AsyncListDiffer(this, differCallback)
     private var onItemClickListener: ((Article) -> Unit)? = null
 
-    fun onItemClickListener(listener: (Article) -> Unit) {
+    fun setOnItemClickListener(listener: (Article) -> Unit) {
         onItemClickListener = listener
     }
 
@@ -32,12 +32,14 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val article = differ.currentList[position]
         holder.binding.apply {
-            Glide.with(ivArticleImage).load(article.urlToImage).into(ivArticleImage)
+            Glide.with(ivArticleImage.context).load(article.urlToImage).into(ivArticleImage)
             tvSource.text = article.source.name
             tvTitle.text = article.title
             tvDescription.text = article.description
             tvPublishedAt.text = article.publishedAt
-            onItemClickListener { onItemClickListener?.let { it(article) } }
+            root.setOnClickListener {
+                onItemClickListener?.let { it(article) }
+            }
         }
     }
 
